@@ -19,22 +19,41 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
-    @Value("${kafka.bootstrap-servers}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
+    @Value("${kafka.topic.string.group_id}")
+    private String stringGroupId;
+    @Value("${kafka.topic.dto.group_id}")
+    private String dtoGroupId;
 
     @Bean
-    public ConsumerFactory<String, TestDto> consumerFactory() {
+    public ConsumerFactory<String, String> stringConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "hello");
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
-                new JsonDeserializer<>(TestDto.class));
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, stringGroupId);
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new StringDeserializer());
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, TestDto> kafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, String> stringListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(stringConsumerFactory());
+        return factory;
+    }
+
+    @Bean
+    public ConsumerFactory<String, TestDto> dtoConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, dtoGroupId);
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(TestDto.class));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, TestDto> dtoListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, TestDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+        factory.setConsumerFactory(dtoConsumerFactory());
         return factory;
     }
 }

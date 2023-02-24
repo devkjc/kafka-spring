@@ -16,9 +16,15 @@ public class KafkaController {
 
     private final KafkaProducer kafkaProducer;
 
-    @PostMapping
-    public ResponseEntity<Void> sendMessage(@RequestBody TestDto testDto) {
-        kafkaProducer.sendMessage(testDto);
+    @PostMapping("/dto")
+    public ResponseEntity<Void> sendMessageDto(@RequestBody TestDto testDto) {
+        kafkaProducer.sendMessageDto(testDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/string")
+    public ResponseEntity<Void> sendMessageString(@RequestParam String message) {
+        kafkaProducer.sendMessageString(message);
         return ResponseEntity.ok().build();
     }
 

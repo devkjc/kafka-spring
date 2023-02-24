@@ -9,8 +9,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KafkaConsumer {
 
-    @KafkaListener(topics = "testTopic", groupId = "hello")
-    public void consume(TestDto testDto) {
-        System.out.println("consume :: " + testDto);
+    @KafkaListener(topics = "${kafka.topic.dto.name}",
+            groupId = "${kafka.topic.dto.group_id}",
+            containerFactory = "dtoListenerContainerFactory")
+    public void dtoConsume(TestDto testDto) {
+        System.out.println("dto Consume :: " + testDto);
+    }
+
+    @KafkaListener(topics = "${kafka.topic.string.name}",
+            groupId = "${kafka.topic.string.group_id}",
+            containerFactory = "stringListenerContainerFactory")
+    public void stringConsume(String message) {
+        System.out.println("String consume :: " + message);
     }
 }

@@ -1,2 +1,15 @@
 kafka:
-  bootstrap-servers: localhost:29092
+  topic:
+    string:
+      name: string
+      group_id: groupIdString
+      partitions: 1
+      replicas: 1
+    dto:
+      name: dto
+      group_id: groupIdDto
+      partitions: 3
+      replicas: 3
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092
