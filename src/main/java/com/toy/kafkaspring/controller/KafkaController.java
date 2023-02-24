@@ -1,5 +1,7 @@
-package com.toy.kafkaspring;
+package com.toy.kafkaspring.controller;
 
+import com.toy.kafkaspring.dto.TestDto;
+import com.toy.kafkaspring.service.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +16,9 @@ public class KafkaController {
 
     private final KafkaProducer kafkaProducer;
 
-    @GetMapping
-    public ResponseEntity<Void> sendMessage(@RequestParam String message) {
-        kafkaProducer.sendMessage(message);
+    @PostMapping
+    public ResponseEntity<Void> sendMessage(@RequestBody TestDto testDto) {
+        kafkaProducer.sendMessage(testDto);
         return ResponseEntity.ok().build();
     }
 

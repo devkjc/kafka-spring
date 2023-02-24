@@ -1,5 +1,6 @@
-package com.toy.kafkaspring;
+package com.toy.kafkaspring.service;
 
+import com.toy.kafkaspring.dto.TestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -8,9 +9,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KafkaProducer {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, TestDto> kafkaTemplate;
 
-    public void sendMessage(String message) {
+    public void sendMessage(TestDto message) {
         System.out.println("producer :: " + message);
         kafkaTemplate.send("testTopic", message);
     }

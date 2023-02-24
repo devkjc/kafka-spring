@@ -1,5 +1,6 @@
-package com.toy.kafkaspring;
+package com.toy.kafkaspring.service;
 
+import com.toy.kafkaspring.dto.TestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,7 @@ import org.springframework.stereotype.Service;
 public class KafkaConsumer {
 
     @KafkaListener(topics = "testTopic", groupId = "hello")
-    public void consume(String message) {
-        System.out.println("consume :: " + message);
+    public void consume(TestDto testDto) {
+        System.out.println("consume :: " + testDto);
     }
-
-
 }
